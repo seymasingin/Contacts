@@ -1,15 +1,11 @@
 package com.seymasingin.contacts.ui.fragment;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.seymasingin.contacts.R;
 import com.seymasingin.contacts.databinding.FragmentAddBinding;
 
 public class AddFragment extends Fragment {

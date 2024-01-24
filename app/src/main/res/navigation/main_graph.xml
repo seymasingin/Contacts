@@ -26,5 +26,9 @@
         android:id="@+id/detailFragment"
         android:name="com.seymasingin.contacts.ui.fragment.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="person"
+            app:argType="com.seymasingin.contacts.data.model.Person" />
+    </fragment>
 </navigation>
