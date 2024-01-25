@@ -1,15 +1,21 @@
 package com.seymasingin.contacts.ui.fragment;
 
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.seymasingin.contacts.databinding.FragmentAddBinding;
+import com.seymasingin.contacts.ui.viewmodel.AddViewModel;
 
 public class AddFragment extends Fragment {
     private FragmentAddBinding binding;
+    private AddViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -17,7 +23,7 @@ public class AddFragment extends Fragment {
         binding = FragmentAddBinding.inflate(inflater, container, false);
 
         binding.toolbarAdd.setTitle("Add");
-        binding.etName.setOnClickListener(view -> {
+        binding.buttonAdd.setOnClickListener(view -> {
             String etName = binding.etName.getText().toString();
             String etTel = binding.etTel.getText().toString();
             add(etName, etTel);
@@ -25,7 +31,14 @@ public class AddFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(AddViewModel.class);
+    }
+
     public void add(String etName, String etTel) {
-        Log.e("Added", "Added");
+        viewModel.add(etName,etTel);
     }
 }
