@@ -1,10 +1,22 @@
 package com.seymasingin.contacts.data.repo;
 
 import android.util.Log;
+import androidx.lifecycle.MutableLiveData;
 import com.seymasingin.contacts.data.model.Person;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContactsRepository {
+
+    private MutableLiveData<List<Person>> personList;
+
+    public ContactsRepository() {
+        personList = new MutableLiveData();
+    }
+
+    public MutableLiveData<List<Person>> getPersonList(){
+        return personList;
+    }
 
     public void add(String person_name, String person_tel) {
         Log.e("Added", person_name + "-"+ person_tel);
@@ -31,5 +43,6 @@ public class ContactsRepository {
         liste.add(p1);
         liste.add(p2);
         liste.add(p3);
+        personList.setValue(liste);
     }
 }

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("androidx.navigation.safeargs")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -49,4 +50,16 @@ dependencies {
 
     //ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    annotationProcessor("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    //Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+
+    //RxJava
+    implementation("androidx.room:room-rxjava2:2.6.1")
+    implementation("io.reactivex.rxjava2:rxandroid:2.0.1")
 }

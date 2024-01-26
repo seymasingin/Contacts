@@ -1,18 +1,17 @@
 package com.seymasingin.contacts.ui.fragment;
 
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.seymasingin.contacts.databinding.FragmentAddBinding;
 import com.seymasingin.contacts.ui.viewmodel.AddViewModel;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class AddFragment extends Fragment {
     private FragmentAddBinding binding;
     private AddViewModel viewModel;

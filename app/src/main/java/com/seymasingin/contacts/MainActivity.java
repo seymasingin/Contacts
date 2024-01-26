@@ -1,9 +1,10 @@
 package com.seymasingin.contacts;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @Override
