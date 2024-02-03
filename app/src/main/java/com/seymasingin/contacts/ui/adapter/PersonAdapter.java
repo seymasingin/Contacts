@@ -14,12 +14,14 @@ import java.util.List;
 
 public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.CardHolder>{
 
-    private HomeViewModel viewModel;
-    private List<Person> personList;
 
-    public PersonAdapter(HomeViewModel viewModel, List<Person> personList) {
-        this.viewModel = viewModel;
+    private List<Person> personList;
+    private ContactsListener contactsListener;
+
+    public PersonAdapter(List<Person> personList, ContactsListener contactsListener) {
+
         this.personList = personList;
+        this.contactsListener = contactsListener;
     }
 
     public class CardHolder extends RecyclerView.ViewHolder {
@@ -47,7 +49,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.CardHolder
         b.icDelete.setOnClickListener(view ->{
             Snackbar.make(view, person.getPerson_name()+ "delete?", Snackbar.LENGTH_LONG)
                     .setAction("YES", view1 -> {
-                        viewModel.delete(person.getPerson_id());
+                        contactsListener.onDelete(person.getPerson_id());
                     }).show();
         });
         b.card.setOnClickListener(view ->{
@@ -59,5 +61,9 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.CardHolder
     @Override
     public int getItemCount() {
         return personList.size();
+    }
+
+    public interface ContactsListener {
+        public void onDelete(int person_id);
     }
 }

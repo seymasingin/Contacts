@@ -22,7 +22,7 @@ import com.seymasingin.contacts.ui.viewmodel.HomeViewModel;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment implements SearchView.OnQueryTextListener{
+public class HomeFragment extends Fragment implements SearchView.OnQueryTextListener, PersonAdapter.ContactsListener{
 
     private FragmentHomeBinding binding;
     private HomeViewModel viewModel;
@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         ((AppCompatActivity)getActivity()).setSupportActionBar(binding.toolbarHome);
 
         viewModel.personList.observe(getViewLifecycleOwner(), liste -> {
-            PersonAdapter adapter = new PersonAdapter(viewModel, liste);
+            PersonAdapter adapter = new PersonAdapter(liste, this);
             binding.rv.setAdapter(adapter);
         });
 
@@ -85,5 +85,10 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     public void onResume() {
         super.onResume();
         viewModel.getContacts();
+    }
+
+    @Override
+    public void onDelete(int person_id) {
+        viewModel.delete(person_id);
     }
 }

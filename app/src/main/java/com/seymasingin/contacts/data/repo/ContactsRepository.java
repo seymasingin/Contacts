@@ -1,16 +1,22 @@
 package com.seymasingin.contacts.data.repo;
 
-import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import com.seymasingin.contacts.data.model.Person;
-import java.util.ArrayList;
+import com.seymasingin.contacts.room.ContactsDao;
 import java.util.List;
+import io.reactivex.CompletableObserver;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ContactsRepository {
 
     private MutableLiveData<List<Person>> personList;
+    private ContactsDao contactsDao;
 
-    public ContactsRepository() {
+    public ContactsRepository( ContactsDao contactsDao) {
+        this.contactsDao = contactsDao;
         personList = new MutableLiveData();
     }
 
@@ -19,30 +25,86 @@ public class ContactsRepository {
     }
 
     public void add(String person_name, String person_tel) {
-        Log.e("Added", person_name + "-"+ person_tel);
+        Person newPerson = new Person(0, person_name, person_tel);
+        contactsDao.addContact(newPerson).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onComplete() {}
+
+                    @Override
+                    public void onError(Throwable e) {}
+                });
     }
 
     public void refresh(int person_id, String person_name, String person_tel) {
-        Log.e("added", person_name+"-"+ person_tel);
+        Person updatedPerson = new Person(person_id, person_name, person_tel);
+        contactsDao.updateContact(updatedPerson).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onComplete() {}
+
+                    @Override
+                    public void onError(Throwable e) {}
+                });
     }
 
     public void search(String word){
-        Log.e("search", "search");
+        contactsDao.searchContact(word).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Person>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onSuccess(List<Person> people) {
+                        personList.setValue(people);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {}
+                });
     }
 
     public void delete(int person_id){
-        Log.e("Delete", String.valueOf(person_id));
+        Person deletedPerson = new Person(person_id, "", "");
+        contactsDao.deleteContact(deletedPerson).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onComplete() {
+                        getContacts();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {}
+                });
     }
 
     public void getContacts() {
-        ArrayList<Person> liste = new ArrayList<>();
-        Person p1 = new Person(1, "Seyma", "111");
-        Person p2 = new Person(2, "Elif", "111");
-        Person p3 = new Person(3, "Kubra", "111");
+        contactsDao.allContacts().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Person>>() {
+            @Override
+            public void onSubscribe(Disposable d) {}
 
-        liste.add(p1);
-        liste.add(p2);
-        liste.add(p3);
-        personList.setValue(liste);
+            @Override
+            public void onSuccess(List<Person> people) {
+                personList.setValue(people);
+            }
+
+            @Override
+            public void onError(Throwable e) {}
+        });
     }
 }
